@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PlaceCategoryView">
+        <attr name="titleText" format="string" localization="suggested" />
+        <attr name="count" format="integer" />
+        <attr name="image" format="string" />
+        <attr name="imageBackgroundColor" format="color" />
+    </declare-styleable>
+
+</resources>
