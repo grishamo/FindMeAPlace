@@ -7,4 +7,10 @@
         <attr name="imageBackgroundColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="PlaceItemView">
+        <attr name="placeTitle" format="string" localization="suggested" />
+        <attr name="placeDescription" format="string" localization="suggested" />
+        <attr name="placeImage" format="string" />
+    </declare-styleable>
+
 </resources>

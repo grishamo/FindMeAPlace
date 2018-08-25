@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Background-->
+    <ImageView
+        android:id="@+id/BackgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg" />
+
+    <!--Header-->
+    <include
+        android:id="@+id/Header"
+        layout="@layout/header" />
+
+    <!--Form Content-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Header"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:onClick="uploadImage"
+            android:id="@+id/PlaceImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#f9f9f9"
+            android:gravity="center"
+            android:layout_marginBottom="2sp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_a_photo"
+                android:alpha=".3"
+                android:layout_gravity="center"/>
+
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/PlaceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="#e8ffffff"
+            android:hint="Place Title"
+            android:inputType="text"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/PlaceDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="#e8ffffff"
+            android:gravity="top"
+            android:hint="Place Description"
+            android:inputType="textShortMessage"
+            android:minHeight="100dp"
+            android:padding="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Place"/>
+
+    </LinearLayout>
+
+    <!--Form Title-->
+    <com.example.grisha.findaplace.CustomTextView
+        android:id="@+id/PageTitle"
+        style="@style/PageTitle"
+        android:layout_below="@id/Header"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Create New Place" />
+</RelativeLayout>

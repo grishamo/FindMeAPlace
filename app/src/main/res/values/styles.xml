@@ -18,4 +18,15 @@
         <item name="android:padding">20sp</item>
     </style>
 
+    <style name="PageTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/pageTitleBackground</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

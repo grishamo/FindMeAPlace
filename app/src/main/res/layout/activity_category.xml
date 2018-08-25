@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <!--Background-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg" />
+
+    <!--Header-->
+    <include
+        android:id="@+id/Header"
+        layout="@layout/header" />
+
+    <!--Form Title-->
+    <com.example.grisha.findaplace.CustomTextView
+        android:id="@+id/PageTitle"
+        style="@style/PageTitle"
+        android:layout_below="@id/Header"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="My Places" />
+
+    <LinearLayout
+        android:layout_below="@id/PageTitle"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.example.grisha.findaplace.PlaceItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            custom:placeTitle="MY PLACES"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

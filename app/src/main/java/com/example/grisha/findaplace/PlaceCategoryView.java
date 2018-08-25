@@ -48,12 +48,5 @@ public class PlaceCategoryView extends LinearLayout {
         this(context, null);
     }
 
-    public void setValueColor(int color) {
-        mValue.setBackgroundColor(color);
-    }
-
-    public void setImageVisible(boolean visible) {
-        mImage.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
 
 }
