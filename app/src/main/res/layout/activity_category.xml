@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <!--Background-->
     <ImageView
@@ -19,25 +18,46 @@
 
     <!--Form Title-->
     <com.example.grisha.findaplace.CustomTextView
-        android:id="@+id/PageTitle"
+        android:id="@+id/CategoryTitle"
         style="@style/PageTitle"
         android:layout_below="@id/Header"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:text="My Places" />
+        android:text="Category Title" />
 
-    <LinearLayout
-        android:layout_below="@id/PageTitle"
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/CategoryTitle"
+        android:layout_marginTop="20sp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp">
 
-        <com.example.grisha.findaplace.PlaceItemView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:placeTitle="MY PLACES"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.example.grisha.findaplace.PlaceItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                custom:placeDescription="Place Description for only 2 lines, the is some lorem ipsum"
+                android:onClick="openPlace"
+                custom:placeTitle="Place Title" />
 
+        </LinearLayout>
 
+    </ScrollView>
+
+    <com.example.grisha.findaplace.CustomTextView
+        android:id="@+id/AddPlaceButton"
+        style="@style/ActionButton"
+        android:visibility="gone"
+        android:onClick="AddNewPlace"
+        android:layout_margin="20dp"
+        android:text="Add New Place"
+        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        />
 </RelativeLayout>

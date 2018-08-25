@@ -10,7 +10,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!--Header-->
     <style name="Header">
         <item name="android:background">#e7171717</item>
         <item name="android:layout_height">wrap_content</item>
@@ -26,7 +25,18 @@
         <item name="android:textColor">#fff</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingEnd">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="ActionButton">
+        <item name="android:background">#ad1a20</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

@@ -4,6 +4,7 @@
         <attr name="titleText" format="string" localization="suggested" />
         <attr name="count" format="integer" />
         <attr name="image" format="string" />
+        <attr name="categoryName" format="string" />
         <attr name="imageBackgroundColor" format="color" />
     </declare-styleable>
 
@@ -11,6 +12,7 @@
         <attr name="placeTitle" format="string" localization="suggested" />
         <attr name="placeDescription" format="string" localization="suggested" />
         <attr name="placeImage" format="string" />
+        <attr name="placeId" format="integer" />
     </declare-styleable>
 
 </resources>

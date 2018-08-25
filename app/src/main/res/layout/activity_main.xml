@@ -33,17 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
-            custom:imageBackgroundColor="#e1388cb1"
             android:onClick="openPlace"
+            custom:categoryName="my_places"
+            custom:imageBackgroundColor="#e1388cb1"
             custom:titleText="MY PLACES" />
 
         <com.example.grisha.findaplace.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/PageTitle"
             android:layout_marginTop="30dp"
-            android:background="#fff"
-            android:textSize="18sp"
-            android:padding="5dp"
             android:text="Close To Me" />
 
         <ScrollView
@@ -59,8 +56,10 @@
                 <com.example.grisha.findaplace.PlaceCategoryView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="openPlace"
                     custom:imageBackgroundColor="#d3883221"
-                    custom:titleText="MY PLACES" />
+                    custom:categoryName="coffeehouses"
+                    custom:titleText="Coffeehouses" />
                 <com.example.grisha.findaplace.PlaceCategoryView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

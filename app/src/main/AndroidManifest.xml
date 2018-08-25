@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.grisha.findaplace">
 
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +23,9 @@
         </activity>
 
         <activity android:name=".CreatePlaceActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".PlaceActivity" />
+
     </application>
 
 </manifest>

@@ -15,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void openPlace(View view)
     {
-        Intent intent = new Intent(this, CreatePlaceActivity.class);
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra("categoryName", ((PlaceCategoryView)view).getCategoryName());
+        intent.putExtra("categoryTitle", ((PlaceCategoryView)view).getCategoryTitle());
         startActivity(intent);
     }
 }

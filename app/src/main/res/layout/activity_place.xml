@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Background-->
+    <ImageView
+        android:id="@+id/BackgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg" />
+
+    <!--Header-->
+    <include
+        android:id="@+id/Header"
+        layout="@layout/header" />
+
+    <!--Form Content-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Header"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/PlaceImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="2sp"
+            android:background="#f9f9f9"
+            android:gravity="center">
+
+            <ImageView
+                android:src="@drawable/place_img"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:src="@drawable/ic_add_a_photo"-->
+            <!--android:alpha=".2"-->
+            <!--android:layout_gravity="center"/>-->
+
+        </RelativeLayout>
+
+        <TextView
+            android:background="#e8ffffff"
+            android:paddingTop="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="5dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/PlaceDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:textSize="17sp"
+            android:background="#e8ffffff"
+            android:gravity="left"
+            android:lines="5"
+            android:minHeight="100dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+            android:text="This is version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
+Aenean sollicitudin, lorem quis bibendum tincidunt auctor a ornare odio." />
+
+        <LinearLayout
+            android:id="@+id/SocialButtons"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e8ffffff">
+
+            <Button
+                android:id="@+id/callButton"
+                android:onClick="CallPlace"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="C" />
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="W" />
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="S" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--Form Title-->
+    <com.example.grisha.findaplace.CustomTextView
+        android:id="@+id/PlaceTitle"
+        style="@style/PageTitle"
+        android:layout_below="@id/Header"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="RAS SHITAN" />
+</RelativeLayout>

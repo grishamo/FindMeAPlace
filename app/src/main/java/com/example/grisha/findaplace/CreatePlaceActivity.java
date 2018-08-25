@@ -7,9 +7,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -25,9 +29,9 @@ public class CreatePlaceActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_place);
 
-        ImageView m_PlaceImage = findViewById(R.id.PlaceImage);
-        TextView m_PlaceTitle = findViewById(R.id.PlaceTitle);
-        TextView m_PlaceDescription = findViewById(R.id.PlaceDescription);;
+        RelativeLayout m_PlaceImage = findViewById(R.id.PlaceImage);
+        EditText m_PlaceTitle = findViewById(R.id.PlaceTitle);
+        EditText m_PlaceDescription =findViewById(R.id.PlaceDescription);;
     }
 
     public void uploadImage(View view)

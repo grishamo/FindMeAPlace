@@ -1,6 +1,7 @@
 package com.example.grisha.findaplace;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ public class PlaceItemView extends LinearLayout {
 
     private View mValue;
     private ImageView mImage;
+    private int mPlaceId;
 
     public PlaceItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,6 +25,7 @@ public class PlaceItemView extends LinearLayout {
 
         String titleText = a.getString(R.styleable.PlaceItemView_placeTitle);
         String descriptionText = a.getString(R.styleable.PlaceItemView_placeDescription);
+        mPlaceId = a.getInteger(R.styleable.PlaceItemView_placeId, -1);
         //int valueCount = a.getInteger(R.styleable.PlaceCategoryView_count, 0);
         a.recycle();
 
@@ -46,5 +49,5 @@ public class PlaceItemView extends LinearLayout {
         this(context, null);
     }
 
-
+    public int getPlaceId() { return mPlaceId; }
 }
