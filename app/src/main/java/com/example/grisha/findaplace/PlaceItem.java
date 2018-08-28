@@ -15,7 +15,7 @@ public class PlaceItem implements Serializable {
     private String m_Location = "";
     private String m_Phone = "";
     private String m_Url = "";
-    private Bitmap m_Image = null; // must be treated specially on serialization
+    transient private Bitmap m_Image = null; // must be treated specially on serialization
     private byte[] m_ImageByteArray = null;
 
 

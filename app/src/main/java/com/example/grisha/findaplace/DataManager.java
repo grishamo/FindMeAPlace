@@ -30,6 +30,7 @@ public class DataManager {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 m_MyPlaces = (PlacesManager)ois.readObject();
                 ois.close();
+                fis.close();
 
                 returnValue = m_MyPlaces;
 
@@ -61,6 +62,7 @@ public class DataManager {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(m_MyPlaces);
             oos.close();
+            fos.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
