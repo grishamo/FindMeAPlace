@@ -34,18 +34,28 @@
         android:paddingStart="20dp">
 
         <LinearLayout
+            android:id="@+id/PlacesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.example.grisha.findaplace.PlaceItemView
+<!--            <com.example.grisha.findaplace.PlaceItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                custom:placeDescription="Place Description for only 2 lines, the is some lorem ipsum"
                 android:onClick="openPlace"
-                custom:placeTitle="Place Title" />
-
+                custom:placeDescription="Place Description for only 2 lines, the is some lorem ipsum"
+                custom:placeTitle="Place Title" />-->
+            <com.example.grisha.findaplace.CustomTextView
+                android:id="@+id/ListIsEmptyText"
+                android:layout_width="match_parent"
+                android:text="@string/list_is_empty"
+                android:textColor="#ccffffff"
+                android:textAllCaps="true"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:background="#8e000000"
+                android:layout_height="200dp" />
         </LinearLayout>
 
     </ScrollView>
@@ -53,11 +63,11 @@
     <com.example.grisha.findaplace.CustomTextView
         android:id="@+id/AddPlaceButton"
         style="@style/ActionButton"
-        android:visibility="gone"
+        android:visibility="visible"
         android:onClick="AddNewPlace"
+        android:background="@mipmap/ic_add"
         android:layout_margin="20dp"
-        android:text="Add New Place"
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_width="70dp"
         />
 </RelativeLayout>

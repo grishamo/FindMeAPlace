@@ -1,4 +1,19 @@
 <resources>
-    <string name="app_name">FindAPlace</string>
-    <string name="google_maps_key">AIzaSyAJo-hxGNfXllY3GuLu-U7cMSC9kpcwApQ</string>
+    <string name="app_name">FindPlace</string>
+    <string name="nearby_places">Nearby Places</string>
+    <string name="my_places">MY PLACES</string>
+    <string name="pick_image_intent_text">Select Place Image</string>
+    <string name="place_title">Place Title</string>
+    <string name="place_description">Place Description</string>
+    <string name="create_new_place">Create New Place</string>
+    <string name="save_place">Save Place</string>
+    <string name="pnone_number">Pnone Number</string>
+    <string name="place_url">Place Url</string>
+    <string name="place_address">Place Address</string>
+    <string name="add_new">Add New</string>
+    <string name="upload_place_image">Upload Place Image</string>
+    <string name="click_to_upload">Click to Upload</string>
+    <string name="current">Current  </string>
+    <string name="list_is_empty">The List is Empty</string>
+    <string name="description">Description:</string>
 </resources>

@@ -8,6 +8,7 @@
         <ImageView
             android:id="@+id/PlaceImage"
             android:layout_width="70dp"
+            android:scaleType="centerCrop"
             android:layout_height="match_parent"
             android:background="#FFFFFF" />
 

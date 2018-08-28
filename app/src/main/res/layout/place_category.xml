@@ -3,26 +3,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_height="70dp"
         android:layout_marginBottom="1dp"
+        android:layout_marginTop="1dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/CategoryImage"
+        <RelativeLayout
+            android:id="@+id/CategoryColor"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:background="#FFFFFF" />
+            android:layout_gravity="center">
 
+            <ImageView
+                android:id="@+id/CategoryImage"
+                android:layout_centerInParent="true"
+                android:alpha=".8"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_my_location_black_24dp" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="#c5000000"
-            android:paddingStart="20sp"
             android:paddingEnd="20sp"
-            android:paddingTop="25sp"
-            android:paddingBottom="25sp"
-            android:layout_height="wrap_content">
+            android:paddingStart="20sp">
 
             <com.example.grisha.findaplace.CustomTextView
                 android:id="@+id/CategoryTitle"

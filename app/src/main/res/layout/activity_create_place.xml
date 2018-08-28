@@ -17,66 +17,155 @@
         layout="@layout/header" />
 
     <!--Form Content-->
-    <LinearLayout
+    <ScrollView
+        android:layout_below="@id/Header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/Header"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:onClick="uploadImage"
-            android:id="@+id/PlaceImage"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#f9f9f9"
-            android:gravity="center"
-            android:layout_marginBottom="2sp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_add_a_photo"
-                android:alpha=".2"
-                android:layout_gravity="center"/>
-
-        </RelativeLayout>
-
-
-        <EditText
-            android:id="@+id/PlaceTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:background="#e8ffffff"
-            android:hint="Place Title"
-            android:inputType="text"
-            android:padding="10dp" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/PlaceDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:background="#e8ffffff"
-            android:gravity="top"
-            android:hint="Place Description"
-            android:inputType="textShortMessage"
-            android:minHeight="100dp"
-            android:padding="10dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="2sp"
+                android:background="#f9f9f9"
+                android:gravity="center"
+                android:onClick="uploadImage">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Place"/>
+                <ImageView
+                    android:id="@+id/PlaceImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/AddPhotoIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_add_a_photo_black_24dp" />
 
-    <!--Form Title-->
-    <com.example.grisha.findaplace.CustomTextView
-        android:id="@+id/PageTitle"
-        style="@style/PageTitle"
-        android:layout_below="@id/Header"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:text="Create New Place" />
+<!--
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="10dp"
+                    android:alpha=".5"
+                    android:background="#dbffffff"
+                    android:padding="10dp"
+                    android:text="@string/click_to_upload" />
+-->
+
+                <!--Form Title-->
+                <com.example.grisha.findaplace.CustomTextView
+                    android:id="@+id/PageTitle"
+                    style="@style/PageTitle"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/create_new_place" />
+            </RelativeLayout>
+
+
+            <EditText
+                android:id="@+id/PlaceTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="#e8ffffff"
+                android:hint="@string/place_title"
+                android:maxLength="20"
+                android:inputType="text"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/PlaceDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="#e8ffffff"
+                android:maxLength="300"
+                android:gravity="top"
+                android:hint="@string/place_description"
+                android:scrollbars="vertical"
+                android:inputType="textMultiLine"
+                android:maxHeight="100dp"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/PlacePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="20"
+                android:layout_marginBottom="2dp"
+                android:background="#e8ffffff"
+                android:hint="@string/pnone_number"
+                android:inputType="phone"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/PlaceWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="#e8ffffff"
+                android:hint="@string/place_url"
+                android:maxLength="20"
+                android:inputType="textUri"
+                android:padding="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e8ffffff"
+                android:orientation="horizontal"
+                android:paddingEnd="10dp">
+
+                <EditText
+                    android:id="@+id/PlaceAddress"
+                    android:layout_width="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/place_address"
+                    android:maxLength="20"
+                    android:maxWidth="270dp"
+                    android:minWidth="200dp"
+                    android:padding="10dp" />
+
+                <Switch
+                    android:id="@+id/CurrentLocationSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:text="@string/current"
+                    android:textColor="#919191" />
+            </RelativeLayout>
+<!--
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                tools:context="com.example.grisha.findaplace.CreatePlaceActivity" />
+
+            -->
+            <com.example.grisha.findaplace.CustomTextView
+                android:id="@+id/AddPlaceButton"
+                style="@style/ActionButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:onClick="SavePlaceClick"
+                android:text="@string/save_place" />
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

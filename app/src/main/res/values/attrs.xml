@@ -3,8 +3,9 @@
     <declare-styleable name="PlaceCategoryView">
         <attr name="titleText" format="string" localization="suggested" />
         <attr name="count" format="integer" />
-        <attr name="image" format="string" />
+        <attr name="categoryIcon" format="integer" />
         <attr name="categoryName" format="string" />
+        <attr name="categoryId" format="integer" />
         <attr name="imageBackgroundColor" format="color" />
     </declare-styleable>
 

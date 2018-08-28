@@ -29,19 +29,31 @@
         tools:ignore="ObsoleteLayoutParam,RtlSymmetry">
 
         <com.example.grisha.findaplace.PlaceCategoryView
-            android:id="@+id/view1"
+            android:id="@+id/myPlaces"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corners"
             android:onClick="openPlace"
             custom:categoryName="my_places"
             custom:imageBackgroundColor="#e1388cb1"
-            custom:titleText="MY PLACES" />
+            custom:categoryIcon="1"
+            custom:titleText="@string/my_places" />
 
         <com.example.grisha.findaplace.CustomTextView
             style="@style/PageTitle"
             android:layout_marginTop="30dp"
-            android:text="Close To Me" />
+            android:text="@string/nearby_places" />
+
+        <com.example.grisha.findaplace.CustomTextView
+            android:layout_width="match_parent"
+            android:alpha=".8"
+            android:layout_height="100dp"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:background="#bf000000"
+            android:textColor="#f9faff60"
+            android:layout_marginTop="30dp"
+            android:text="UNDER CONSTRUCTION" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -49,48 +61,11 @@
             android:layout_marginTop="20sp">
 
             <LinearLayout
+                android:id="@+id/nearbyPlacesContainer"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="openPlace"
-                    custom:imageBackgroundColor="#d3883221"
-                    custom:categoryName="coffeehouses"
-                    custom:titleText="Coffeehouses" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#de6f7517"
-                    custom:titleText="MY PLACES" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#ce6b3a90"
-                    custom:titleText="MY PLACES" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#d3883221"
-                    custom:titleText="MY PLACES" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#de6f7517"
-                    custom:titleText="MY PLACES" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#ce6b3a90"
-                    custom:titleText="MY PLACES" />
-                <com.example.grisha.findaplace.PlaceCategoryView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    custom:imageBackgroundColor="#d3883221"
-                    custom:titleText="MY PLACES" />
-
 
             </LinearLayout>
         </ScrollView>

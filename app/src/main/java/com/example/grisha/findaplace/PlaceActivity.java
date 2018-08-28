@@ -12,8 +12,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,17 +27,31 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int CALL_PERMISSION_REQUEST = 1;
-    private int mPlaceId;
-    private String mPlaceTitle;
-    private String mPlaceDescription;
-    private String mPlacePhoneNumber;
+    private PlaceItem mPlaceItem;
+    private TextView mPlaceTitleView;
+    private TextView mPlaceDescriptionView;
+    private ImageView mPlaceImage;
+    private View mPhoneBtnView;
+    private View mWebBtnView;
+    private View mShareBtnView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlaceId = getIntent().getIntExtra("id", -1);
+        Intent intent = getIntent();
+
+        mPlaceItem = (PlaceItem) intent.getSerializableExtra("placeItem");
 
         setContentView(R.layout.activity_place);
+
+        mPlaceTitleView = findViewById(R.id.PlaceTitle);
+        mPlaceDescriptionView = findViewById(R.id.PlaceDescription);;
+        mPlaceImage = findViewById(R.id.PlaceImage);;
+        mPhoneBtnView = findViewById(R.id.callButton);
+        mWebBtnView = findViewById(R.id.weblinkButton);;
+        mShareBtnView = findViewById(R.id.shareButton);;
+
+        setItemData(mPlaceItem);
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
@@ -42,26 +59,43 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
     }
 
+    private void setItemData(PlaceItem placeItem) {
+        mPlaceItem = placeItem;
+        mPlaceTitleView.setText(placeItem.getTitle());
+        mPlaceDescriptionView.setText(placeItem.getDescription());
+        mPlaceImage.setImageBitmap(placeItem.getImage());
 
-    public void CallPlace(View view) {
+        if(placeItem.getPhone() == null || placeItem.getPhone().length() < 1)
+        {
+            mPhoneBtnView.setVisibility(View.GONE);
+        }
+
+        if(placeItem.getUrl() == null || placeItem.getUrl().length() < 1)
+        {
+            mWebBtnView.setVisibility(View.GONE);
+        }
+    }
+
+
+    public void CallPlaceClick(View view) {
 
         if (Build.VERSION.SDK_INT >= 23) {
             int hasCallPermission = checkSelfPermission(Manifest.permission.CALL_PHONE);
             if (hasCallPermission == PackageManager.PERMISSION_GRANTED) {
-                callPhone();
+                call();
             } else {
                 requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, CALL_PERMISSION_REQUEST);
             }
         }
         else {
-            callPhone();
+            call();
         }
 
     }
 
-    private void callPhone() {
+    private void call() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + mPlacePhoneNumber));
+        intent.setData(Uri.parse("tel:" + mPlaceItem.getPhone()));
         startActivity(intent);
     }
 
@@ -73,7 +107,7 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-               callPhone();
+               call();
             }
             else
                 {
@@ -90,5 +124,20 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         googleMap.addMarker(new MarkerOptions().position(sydney)
                 .title("Marker in Sydney"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void OpenUrlClick(View view) {
+        if(mPlaceItem.getUrl() != null) {
+            String url = mPlaceItem.getUrl();
+
+            if (!url.startsWith("http://") && !url.startsWith("https://"))
+            {
+                url = "http://" + url;
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        }
     }
 }

@@ -28,7 +28,6 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/PlaceImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginBottom="2sp"
@@ -36,10 +35,10 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/PlaceImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/place_img" />
+                    android:scaleType="centerCrop" />
 
                 <!--Form Title-->
                 <com.example.grisha.findaplace.CustomTextView
@@ -47,14 +46,8 @@
                     style="@style/PageTitle"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
-                    android:text="RAS SHITAN" />
+                    android:text="Place Title" />
 
-                <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="60dp"-->
-                <!--android:src="@drawable/ic_add_a_photo"-->
-                <!--android:alpha=".2"-->
-                <!--android:layout_gravity="center"/>-->
 
             </RelativeLayout>
 
@@ -66,7 +59,7 @@
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
-                android:text="Description"
+                android:text="@string/description"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -76,14 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:background="#e8ffffff"
-                android:gravity="left"
-                android:lines="5"
-                android:minHeight="100dp"
                 android:paddingBottom="10dp"
                 android:paddingEnd="20dp"
                 android:paddingStart="20dp"
-                android:text="This is version  of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet.
-Aenean sollicitudin, lorem quis bibendum tincidunt auctor a ornare odio."
+                android:text="Some Place Description"
                 android:textSize="17sp" />
 
             <LinearLayout
@@ -98,21 +87,28 @@ Aenean sollicitudin, lorem quis bibendum tincidunt auctor a ornare odio."
                 android:paddingTop="10dp">
 
                 <Button
+                    android:layout_margin="1dp"
                     android:id="@+id/callButton"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="CallPlace"
-                    android:text="C" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="CallPlaceClick"
+                    android:background="@mipmap/ic_call" />
 
                 <Button
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="W" />
+                    android:id="@+id/weblinkButton"
+                    android:layout_margin="1dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="OpenUrlClick"
+                    android:background="@mipmap/ic_weblink"/>
 
                 <Button
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="S" />
+                    android:id="@+id/shareButton"
+                    android:layout_margin="1dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="ShareClick"
+                    android:background="@mipmap/ic_share"/>
             </LinearLayout>
 
             <!--Google Map-->
