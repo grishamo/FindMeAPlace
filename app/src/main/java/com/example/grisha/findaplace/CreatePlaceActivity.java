@@ -1,158 +1,192 @@
 package com.example.grisha.findaplace;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
-import org.w3c.dom.Text;
+/**
+ * An activity that displays a map showing the place at the device's current location.
+ */
+public class CreatePlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.util.List;
-import java.util.Locale;
+    private static final String TAG = CreatePlaceActivity.class.getSimpleName();
+    private GoogleMap mMap;
+    private CameraPosition mCameraPosition;
 
-import static android.support.constraint.Constraints.TAG;
+    // The entry point to the Fused Location Provider.
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
-public class CreatePlaceActivity extends Activity implements LocationListener {
+    // A default location (Sydney, Australia) and default zoom to use when location permission is
+    // not granted.
+    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private static final int DEFAULT_ZOOM = 15;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private boolean mLocationPermissionGranted;
 
-    private static final int PICK_IMAGE_ID = 666;
-    private static final int ACCESS_PERMISSION_REQUEST = 777;
-    private static final int PLACE_PICKER_REQUEST = 888;
+    // The geographical location where the device is currently located. That is, the last-known
+    // location retrieved by the Fused Location Provider.
+    private Location mLastKnownLocation;
+
+    // Keys for storing activity state.
+    private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
-    private ImageView m_PlaceImage;
-    private EditText m_PlaceTitle;
-    private EditText m_PlaceDescription;
-    private EditText m_PlaceLocation;
-    private EditText m_PlacePhone;
-    private EditText m_PlaceUrl;
-    private Switch m_CurrentLocationSwitch;
-    private Location m_LastKnownLocation;
-    private LatLng m_CurrentLocation;
-    private LocationManager m_LocationManager;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private static final int PICK_IMAGE_ID = 666;
+
+    private ImageView mPlaceImage;
+    private View mMapContainer;
+    private EditText mPlaceTitle;
+    private EditText mPlaceDescription;
+    private EditText mPlaceLocationEditText;
+    private EditText mPlacePhone;
+    private EditText mPlaceUrl;
+    private Switch mCurrentLocationSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_place);
-
-        m_PlaceImage = findViewById(R.id.PlaceImage);
-        m_PlaceTitle = findViewById(R.id.PlaceTitle);
-        m_PlaceDescription = findViewById(R.id.PlaceDescription);
-        m_PlaceLocation = findViewById(R.id.PlaceAddress);
-        m_PlacePhone = findViewById(R.id.PlacePhone);
-        m_PlaceUrl = findViewById(R.id.PlaceWebsite);
-        m_CurrentLocationSwitch = findViewById(R.id.CurrentLocationSwitch);
-
-        m_LocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
-            m_LastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-           // mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
-        InitPlaceLocationInput();
+        // Retrieve the content view that renders the map.
+        setContentView(R.layout.activity_create_place);
+
+        mPlaceImage = findViewById(R.id.PlaceImage);
+        mPlaceTitle = findViewById(R.id.PlaceTitle);
+        mPlaceDescription = findViewById(R.id.PlaceDescription);
+        mPlaceLocationEditText = findViewById(R.id.PlaceAddress);
+        mPlacePhone = findViewById(R.id.PlacePhone);
+        mPlaceUrl = findViewById(R.id.PlaceWebsite);
+        mCurrentLocationSwitch = findViewById(R.id.CurrentLocationSwitch);
+        mMapContainer = findViewById(R.id.mapContainer);
+
+        // Construct a FusedLocationProviderClient.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Build the map.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        handleLocationSwitch();
     }
 
-    private void InitPlaceLocationInput() {
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            int hasPermission = checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            if (hasPermission == PackageManager.PERMISSION_GRANTED) {
-                displayCurrentLocation();
-            } else {
-                requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_PERMISSION_REQUEST);
-            }
-        } else {
-            m_CurrentLocationSwitch.setChecked(true);
-        }
-
-        m_CurrentLocationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
-                {
-                    m_PlaceLocation.setEnabled(false);
-                    displayCurrentLocation();
-                }
-                else {
-                    m_PlaceLocation.setEnabled(true);
-                }
-            }
-        });
-    }
-
-    private void displayCurrentLocation()
-    {
-//        m_LastKnownLocation = m_LocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        boolean gps_enabled = m_LocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        boolean network_enabled = m_LocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        if(gps_enabled)
-        {
-            m_LastKnownLocation = m_LocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        else if(network_enabled)
-        {
-            m_LastKnownLocation = m_LocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
-
-        if(m_LastKnownLocation != null) {
-
-
-            double currentLongitude = m_LastKnownLocation.getLongitude();
-            double currentLatitude = m_LastKnownLocation.getLatitude();
-
-            m_CurrentLocation = new LatLng(currentLatitude, currentLongitude);
-
-            m_CurrentLocationSwitch.setChecked(true);
-            m_PlaceLocation.setEnabled(false);
-        }
-       // mFusedLocationProviderClient.getLastLocation();
-    }
-
+    // Create Place Methods
     public void uploadImage(View view) {
         Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
         startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+    }
+
+    public void SavePlaceClick(View view) {
+        if(isValidInputs())
+        {
+            PlaceItem placeItem = new PlaceItem()
+                    .setPhone(mPlacePhone.getText().toString())
+                    .setUrl(mPlaceUrl.getText().toString())
+                    .setTitle(mPlaceTitle.getText().toString())
+                    .setDescription(mPlaceDescription.getText().toString());
+
+            // Set Place Image
+            if( mPlaceImage.getDrawable() != null)
+            {
+                placeItem.setImage(((BitmapDrawable)mPlaceImage.getDrawable()).getBitmap());
+            }
+
+            // Set Place Location
+            if( mLocationPermissionGranted && mCurrentLocationSwitch.isChecked() )
+            {
+                placeItem.setLocation(mLastKnownLocation);
+            }
+            else if(mPlaceLocationEditText.getText().length() > 1)
+            {
+                placeItem.setLocation(mPlaceLocationEditText.getText().toString());
+            }
+
+            DataManager.SavePlace(this, placeItem);
+
+            finish();
+        }
+    }
+
+    private boolean isValidInputs() {
+        boolean returnvalue = true;
+
+        if(mPlaceTitle.getText().length() <= 1)
+        {
+            Toast.makeText(this, "Place Title is too short", Toast.LENGTH_LONG).show();
+            returnvalue = false;
+        }
+
+        return returnvalue;
+    }
+
+    private void handleLocationSwitch() {
+
+        mCurrentLocationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    if( !mLocationPermissionGranted ){
+                        InitLocationPermission();
+                    }
+                    else{
+                        updateLocationUi();
+                    }
+
+                }
+                else {
+                    mMapContainer.setVisibility(View.GONE);
+                    mPlaceLocationEditText.setEnabled(true);
+                    mPlaceLocationEditText.setHint(R.string.place_address);
+                }
+            }
+        });
     }
 
     @Override
@@ -168,110 +202,150 @@ public class CreatePlaceActivity extends Activity implements LocationListener {
                     View AddPhotoIcon = findViewById(R.id.AddPhotoIcon);
                     AddPhotoIcon.setVisibility(View.GONE);
 
-                    ViewGroup.LayoutParams params = m_PlaceImage.getLayoutParams();
+                    ViewGroup.LayoutParams params = mPlaceImage.getLayoutParams();
                     params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
                     params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
 
-                    m_PlaceImage.setLayoutParams(params);
-                    m_PlaceImage.setImageBitmap(bitmap);
-                    m_PlaceImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    break;
-
-                case PLACE_PICKER_REQUEST:
-                    Place place = PlacePicker.getPlace(data, this);
-                    String toastMsg = String.format("Place: %s", place.getName());
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    mPlaceImage.setLayoutParams(params);
+                    mPlaceImage.setImageBitmap(bitmap);
+                    mPlaceImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     break;
             }
         }
 
     }
-
+    /**
+     * Saves the state of the map when the activity is paused.
+     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == ACCESS_PERMISSION_REQUEST) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                m_CurrentLocationSwitch.setChecked(true);
-            } else {
-                Toast.makeText(this, "Sorry, can't get nearby places without permission", Toast.LENGTH_LONG).show();
-            }
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mMap != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
+            super.onSaveInstanceState(outState);
         }
     }
 
+    /**
+     * Manipulates the map when it's available.
+     * This callback is triggered when the map is ready to be used.
+     */
     @Override
-    public void onLocationChanged(Location loc) {
-        m_PlaceLocation.setText("");
-        //pb.setVisibility(View.INVISIBLE);
-        Toast.makeText(
-                getBaseContext(),
-                "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                        + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-        String longitude = "Longitude: " + loc.getLongitude();
-        Log.v(TAG, longitude);
-        String latitude = "Latitude: " + loc.getLatitude();
-        Log.v(TAG, latitude);
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+        mMap.getUiSettings().setAllGesturesEnabled(false);
 
-        /*------- To get city name from coordinates -------- */
-        String cityName = null;
-        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-        List<Address> addresses;
+        InitLocationPermission();
+    }
+
+    private void InitLocationPermission()
+    {
+        // Prompt the user for permission.
+        getLocationPermission();
+
+        // Get the current location of the device and set the position of the map.
+        getDeviceLocation();
+
+        // Update activity ui
+        updateLocationUi();
+    }
+
+    /**
+     * Update switch, editText and display map
+     */
+    private void updateLocationUi() {
+        if (mLocationPermissionGranted) {
+            mMapContainer.setVisibility(View.VISIBLE);
+            mCurrentLocationSwitch.setChecked(true);
+            mPlaceLocationEditText.setEnabled(false);
+            mPlaceLocationEditText.setHint(R.string.location_edittext);
+        }
+    }
+
+    /**
+     * Gets the current location of the device, and positions the map's camera.
+     */
+    private void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
         try {
-            addresses = gcd.getFromLocation(loc.getLatitude(),
-                    loc.getLongitude(), 1);
-            if (addresses.size() > 0) {
-                System.out.println(addresses.get(0).getLocality());
-                cityName = addresses.get(0).getLocality();
+            if (mLocationPermissionGranted) {
+                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            mLastKnownLocation = task.getResult();
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
+                            SetMarker(mLastKnownLocation, "My Location");
+
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            mMap.moveCamera(CameraUpdateFactory
+                                    .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+
+    /**
+     * Prompts the user for permission to use the device location.
+     */
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    /**
+     * Handles the result of the request for location permissions.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
             }
         }
-        catch (IOException e) {
-            e.printStackTrace();
+    }
+
+    /**
+     * Set Marker on the map
+     */
+    private void SetMarker(Location position, String title) {
+        if (position != null) {
+            LatLng pos = new LatLng(position.getLatitude(), position.getLongitude());
+
+            mMap.addMarker(new MarkerOptions().position(pos).title(title));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
         }
-        String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                + cityName;
-        m_PlaceLocation.setText(s);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-    }
-
-    public void SavePlaceClick(View view) {
-        if(isValidInputs())
-        {
-            PlaceItem placeItem = new PlaceItem()
-                    .setPhone(m_PlacePhone.getText().toString())
-                    .setUrl(m_PlaceUrl.getText().toString())
-                    .setTitle(m_PlaceTitle.getText().toString())
-                    .setDescription(m_PlaceDescription.getText().toString());
-
-            if( m_PlaceImage.getDrawable() != null)
-            {
-                placeItem.setImage(((BitmapDrawable)m_PlaceImage.getDrawable()).getBitmap());
-            }
-
-            DataManager.SavePlace(this, placeItem);
-
-            finish();
-        }
-    }
-
-    private boolean isValidInputs() {
-        boolean returnvalue = true;
-
-        if(m_PlaceTitle.getText().length() <= 1)
-        {
-            Toast.makeText(this, "Place Title is too short", Toast.LENGTH_LONG).show();
-            returnvalue = false;
-        }
-
-        return returnvalue;
     }
 }

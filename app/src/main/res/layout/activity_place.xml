@@ -111,8 +111,22 @@
                     android:background="@mipmap/ic_share"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/addressTextView"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e8ffffff"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:text="@string/address"
+                android:textSize="17sp"/>
+
             <!--Google Map-->
             <LinearLayout
+                android:id="@+id/mapContainer"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:background="#e8ffffff"
@@ -127,6 +141,8 @@
                     android:layout_height="match_parent"
                     tools:context="com.example.grisha.findaplace.PlaceActivity" />
             </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>

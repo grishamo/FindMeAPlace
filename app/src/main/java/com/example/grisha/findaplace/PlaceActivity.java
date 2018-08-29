@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,13 +28,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int CALL_PERMISSION_REQUEST = 1;
+    private static final int DEFAULT_ZOOM = 15;
+
+    private GoogleMap mMap;
+
     private PlaceItem mPlaceItem;
     private TextView mPlaceTitleView;
     private TextView mPlaceDescriptionView;
+    private TextView mAddressTextView;
     private ImageView mPlaceImage;
     private View mPhoneBtnView;
     private View mWebBtnView;
     private View mShareBtnView;
+    private View mMapContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +57,10 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         mPhoneBtnView = findViewById(R.id.callButton);
         mWebBtnView = findViewById(R.id.weblinkButton);;
         mShareBtnView = findViewById(R.id.shareButton);;
+        mAddressTextView = findViewById(R.id.addressTextView);;
+        mMapContainer = findViewById(R.id.mapContainer);;
 
         setItemData(mPlaceItem);
-
-        // Get the SupportMapFragment and request notification
-        // when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
     }
 
     private void setItemData(PlaceItem placeItem) {
@@ -65,17 +69,39 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         mPlaceDescriptionView.setText(placeItem.getDescription());
         mPlaceImage.setImageBitmap(placeItem.getImage());
 
+        // Place Phone number
         if(placeItem.getPhone() == null || placeItem.getPhone().length() < 1)
         {
             mPhoneBtnView.setVisibility(View.GONE);
         }
 
+        // Place Web Site
         if(placeItem.getUrl() == null || placeItem.getUrl().length() < 1)
         {
             mWebBtnView.setVisibility(View.GONE);
         }
-    }
 
+        // Place Location
+        if(placeItem.getLocation() != null )
+        {
+            // Get the SupportMapFragment and request notification
+            // when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+        }
+        else
+        {
+            if(placeItem.getCustomLocation().length() > 1)
+            {
+                String address = mAddressTextView.getText().toString() + placeItem.getCustomLocation();
+                mAddressTextView.setText(address);
+                mAddressTextView.setVisibility(View.VISIBLE);
+            }
+
+            mMapContainer.setVisibility(View.GONE);
+        }
+
+    }
 
     public void CallPlaceClick(View view) {
 
@@ -118,12 +144,15 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Location location = mPlaceItem.getLocation();
+        mMap = googleMap;
+
+        mMap.getUiSettings().setAllGesturesEnabled(false);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
+
+        SetMarker(mPlaceItem.getLocation(), mPlaceItem.getLocation().toString());
     }
 
     public void OpenUrlClick(View view) {
@@ -154,5 +183,14 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
         //shareIntent.setType("image/jpeg");
         //shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(shareIntent, "send"));
+    }
+
+    private void SetMarker(Location position, String title) {
+        if (position != null) {
+            LatLng pos = new LatLng(position.getLatitude(), position.getLongitude());
+
+            mMap.addMarker(new MarkerOptions().position(pos).title(title));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+        }
     }
 }

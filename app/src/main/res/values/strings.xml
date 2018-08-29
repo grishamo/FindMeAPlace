@@ -16,4 +16,10 @@
     <string name="current">Current  </string>
     <string name="list_is_empty">The List is Empty</string>
     <string name="description">Description:</string>
+    <string name="option_get_place">Open Get Place:</string>
+    <string name="default_info_title">Your Location</string>
+    <string name="default_info_snippet">Snippet Info</string>
+    <string name="pick_place">Pick Place</string>
+    <string name="location_edittext">Your Current Location</string>
+    <string name="address">Address:</string>
 </resources>
