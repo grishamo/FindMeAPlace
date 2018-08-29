@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FindPlace</string>
+    <string name="nearby_places">מקומות קרובים</string>
+    <string name="my_places">המקומות שלי</string>
+    <string name="pick_image_intent_text">בחר תמונה מקום</string>
+    <string name="place_title">שם המקום</string>
+    <string name="create_new_place">צור מקום חדש</string>
+    <string name="place_description">תיאור המקום</string>
+    <string name="save_place">שמור מקום</string>
+    <string name="pnone_number">מספר טלפון</string>
+    <string name="place_url">כתובת אתר</string>
+    <string name="place_address">כתובת מקום</string>
+    <string name="add_new">הוסף חדש</string>
+    <string name="upload_place_image">העלה תמונת מקום</string>
+    <string name="click_to_upload">לחץ כדי להעלות</string>
+    <string name="current">נוכחי</string>
+    <string name="list_is_empty">הרשימה ריקה</string>
+    <string name="description">"תיאור: "</string>
+    <string name="default_info_title">המיקום שלך</string>
+    <string name="location_edittext">המיקום הנוכחי</string>
+    <string name="address">"כתובת: "</string>
+    <string name="pick_place">בחר מקום</string>
+</resources>

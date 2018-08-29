@@ -172,13 +172,7 @@ public class CreatePlaceActivity extends AppCompatActivity implements OnMapReady
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    if( !mLocationPermissionGranted ){
-                        InitLocationPermission();
-                    }
-                    else{
-                        updateLocationUi();
-                    }
-
+                    InitLocationPermission();
                 }
                 else {
                     mMapContainer.setVisibility(View.GONE);
